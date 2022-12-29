@@ -11,8 +11,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-        template: "./src/index.html",
-        filename: "./index.html"
+      template: path.join(__dirname,'src','index.html'),
+      filename: "./index.html"
     }),
     new MiniCssExtractPlugin({
         filename: "style.css"
@@ -34,5 +34,11 @@ module.exports = {
         }
       },
     ],
+  },
+  devServer:{
+    port:5148,
+    open:true,
+    liveReload:true,
+    watchFiles: ["./src/*.html"],
   }
 }
