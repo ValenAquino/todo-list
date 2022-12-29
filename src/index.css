@@ -1,8 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@200;300;400;500;600;700;800&display=swap');
 
 *:root {
-    --light-bg: linear-gradient(90deg, rgb(5, 137, 224) 0%, rgb(21, 36, 245) 100%);
-    --dark-blue: #040129;
+    --light-bg: linear-gradient(to right, #dfdee2, #f7f7f8);
+    --dark-blue: radial-gradient(circle, #729ab4, #365777);
+    --light-gray: rgb(156, 156, 156);
+    --gray-gradient: linear-gradient(to right, #dfdee2, #f7f7f8);
+    --letter-color: rgb(0, 0, 0);
 }
 
 /* ===== CSS RESET ===== */
@@ -56,16 +59,17 @@ a {
 .header-footer {
     width: 100%;
     height: 11vh;
+    background: radial-gradient(circle, #396afc, #2948ff);
     color: white;
-    background-color: var(--dark-blue);
     user-select: none;
     display: grid;
     align-items: center;
     justify-content: center;
+    font-weight: 800;
 }
 
 footer {
-    border-top: 1px solid white;
+    border-top: 2px solid white;
 }
 
 header {
@@ -75,6 +79,7 @@ header {
 
 header h1 {
     text-align: end;
+    font-weight: 800;
 }
 
 header h2 {
@@ -83,11 +88,10 @@ header h2 {
     letter-spacing: -6px;
 }
 
-
 /* ===== Body ===== */
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family:  'Noto Sans', sans-serif;
     font-size: 18px;
     font-weight: 400;
 }
@@ -103,8 +107,8 @@ main, aside{
 }
 
 aside {
-    background: linear-gradient(to right, #dfdee2, #f7f7f8);
-    border: 1px solid white;
+    background: var(--gray-gradient);
+    box-shadow: 3px 0px 5px 0px rgba(0,0,0,0.1);
 }
 
 main {
@@ -112,6 +116,7 @@ main {
     justify-items: center;
     grid-template-columns: 1fr;
 }
+
 
 /* ===== Aside ===== */
 
@@ -130,7 +135,7 @@ main {
     display: grid;
     grid-template-columns: 80% 20%;
     margin: 5px 0 0 0;
-    border-bottom: 1px solid rgb(182, 182, 182);
+    border-bottom: 1px solid var(--light-gray);
     text-align: center;
     align-items: center;
 }
@@ -138,24 +143,25 @@ main {
 /* ===== Botones ===== */
 
 button {
-    background: linear-gradient(to left, #dfdee2, #f7f7f8);
+    background: var(--gray-gradient);
+    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.3);
+    margin-bottom: 3px;
     font-size: .9rem;
     font-weight: 600;
     padding: .75rem 1rem;
     text-align: center;
-    border-bottom: 1px solid rgb(189, 189, 189);
     cursor: pointer;
     user-select: none;
     max-height: 7vh;
-    color: rgb(20, 18, 27);
+    color: var(--letter-color);
 }
 
 button:hover {
-    background: linear-gradient(to right, #dfdee2, #f7f7f8);
+    background: linear-gradient(to right, #dadada, #dddddd);
 }
 
 button:active {
-    background-color: rgb(225, 226, 228);
+    background: linear-gradient(to right, #c5c5c5, #dfdfdf);
 }
 
 #all-task-btn {
@@ -166,30 +172,51 @@ button:active {
 #add-project-btn {
     margin: 0;
     border: 0;
-    border-left: 1px solid rgb(187, 187, 187);
+    border-left: 1px solid var(--light-gray);
+}
+
+/* ===== tasks ===== */
+
+#tasks-tittle {
+    margin: 10px 0 15px 0;
+    border-bottom: 2px solid var(--light-gray);
+    text-align: start;
+    height: fit-content;
+    color: rgb(43, 43, 43);
 }
 
 #tasks {
     margin-top: 5px;
-    width: 99%;
+    width: 80%;
     display: grid;
     grid-template-columns: 1fr;
+    align-items: flex-start;
     height: fit-content;
-    align-items: center;
-    gap: 2px 0;
+    gap: 3px 0;
+    padding: 5vh 0;
 }
 
 .task {
-    background: linear-gradient(to right, #e7e7e7, #f7f7f8);
     min-height: 8vh;
     width: 100%;
     display: grid;
     align-items: center;
-    padding: 5px;
-    grid-template-columns: 3% 97%;
-    border: 1px solid white;
+    padding: 10px;
+    grid-template-columns: 5% 95%;
+    
+    background: var(--gray-gradient);
+    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.55);
+    border-radius: 22px;
 }
 
-input[type=checkbox] {
-    transform: scale(1.5);
+
+/* ===== Checkboxes ===== */
+
+.chk-lbl {
+    justify-self: center;
+}
+
+input[type=checkbox] {  
+    transform: scale(1.8);
+    border: none;
 }
