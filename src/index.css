@@ -53,13 +53,12 @@ a {
     color: inherit;
 }
 
-
 /* ===== Header & Footer ===== */
 
 .header-footer {
     width: 100%;
     height: 11vh;
-    background: radial-gradient(circle, #396afc, #2948ff);
+    background: radial-gradient(circle, #0e1f52, #011169);
     color: white;
     user-select: none;
     display: grid;
@@ -94,6 +93,7 @@ body {
     font-family:  'Noto Sans', sans-serif;
     font-size: 18px;
     font-weight: 400;
+    user-select: none;
 }
 
 #content {
@@ -117,7 +117,6 @@ main {
     grid-template-columns: 1fr;
 }
 
-
 /* ===== Aside ===== */
 
 #projects-btns {
@@ -138,6 +137,7 @@ main {
     border-bottom: 1px solid var(--light-gray);
     text-align: center;
     align-items: center;
+    height: fit-content;
 }
 
 /* ===== Botones ===== */
@@ -146,8 +146,8 @@ button {
     background: var(--gray-gradient);
     box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.3);
     margin-bottom: 3px;
-    font-size: .9rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 400;
     padding: .75rem 1rem;
     text-align: center;
     cursor: pointer;
@@ -157,7 +157,8 @@ button {
 }
 
 button:hover {
-    background: linear-gradient(to right, #dadada, #dddddd);
+    background: none;
+    background-color: rgba(255, 255, 255, 0.582);
 }
 
 button:active {
@@ -169,17 +170,43 @@ button:active {
     width: 100%;
 }
 
-#add-project-btn {
+.add-button {
     margin: 0;
-    border: 0;
-    border-left: 1px solid var(--light-gray);
+    border: none;
+    background: none;
+    background-color:#f7f7f8;
 }
 
-/* ===== tasks ===== */
+.add-button:hover {
+    background-color: #ffffff;
+}
+
+.add-button:active {
+    background-color: #cfcecf;
+}
+
+.remove-btn {
+    border-radius: 50%;
+}
+
+/* ===== Tools ===== */
+
+.tools {
+    text-align: end;
+}
+
+.add-button {
+    display: inline-block;
+}
+
+/* ===== Tasks ===== */
+
+.tittle-and-tools-container {
+    margin-bottom: 20px;
+    padding: 10px;
+}
 
 #tasks-tittle {
-    margin: 10px 0 15px 0;
-    border-bottom: 2px solid var(--light-gray);
     text-align: start;
     height: fit-content;
     color: rgb(43, 43, 43);
@@ -202,21 +229,77 @@ button:active {
     display: grid;
     align-items: center;
     padding: 10px;
-    grid-template-columns: 5% 95%;
-    
     background: var(--gray-gradient);
-    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.55);
+    grid-template-columns: 8% 87% 5%;
+    background: none;
+    box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.35);
     border-radius: 22px;
 }
 
+.task:hover {
+    background: none;
+    background-color: rgba(255, 255, 255, 0.3);
+}
 
 /* ===== Checkboxes ===== */
 
 .chk-lbl {
+    display: grid;
+    align-items: center;
     justify-self: center;
+    height: min-content;
 }
 
 input[type=checkbox] {  
-    transform: scale(1.8);
     border: none;
+    appearance: none;
+    height: 34px;
+    width: 36px;
+    background-color: rgba(255, 255, 255, 0.671); 
+    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.3);
+    animation: fade .2s ease-out;
+}
+
+input[type=checkbox]:hover,
+input[type=checkbox]:checked:hover {
+    filter: brightness(90%);
+}
+
+input[type=checkbox]:checked {
+    background-color:#bbee8b;
+    animation: tick .3s ease-out;
+}
+
+input[type=checkbox]:checked::after {
+    position: relative;
+    left: 10px;
+    top: 4px;
+    content: "✔";
+    font-size: 1.1em;
+    font-weight: 800;
+    color: rgb(37, 70, 0);
+}
+
+/* ===== Checkboxes ===== */
+
+@keyframes tick {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+        filter: brightness(1.1);
+    }
+    100% {
+        opacity: 1;
+    }
 }
