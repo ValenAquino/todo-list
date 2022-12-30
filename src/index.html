@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>To-Do</title>
 </head>
 <body>
@@ -18,7 +19,11 @@
             <div id="projects-btns">
                 <div class="project-add-container">
                     <h3>Projects</h3>
-                    <button id="add-project-btn" class="add-button">+</button>
+                    <button id="add-project-btn" class="add-button">
+                        <span class="material-symbols-outlined">
+                            add
+                        </span>
+                    </button>
                 </div>
                 <button class="project-btn">Project1</button>
                 <button class="project-btn">Project2</button>
@@ -31,8 +36,16 @@
                 <div class="project-add-container tittle-and-tools-container">
                     <h2 id="tasks-tittle">Todas las Tareas</h2>
                     <div class="tools">
-                        <button id="add-task-btn" class="add-button">+</button>
-                        <button id="remove-project-btn" class="add-button">-</button>
+                        <button id="add-task-btn" class="add-button">
+                            <span class="material-symbols-outlined">
+                                add
+                            </span>
+                        </button>
+                        <button id="remove-project-btn" class="add-button">
+                            <span class="material-symbols-outlined">
+                                delete
+                            </span>
+                        </button>
                     </div>
                 </div>
                     <div class="task">
@@ -42,7 +55,11 @@
                         <span>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         </span>
-                        <button id="add-task-btn" class="add-button remove-btn"> - </button>
+                        <button id="remove-task-btn" class="add-button remove-btn"> 
+                            <span class="material-symbols-outlined">
+                                delete
+                            </span>
+                        </button>
                     </div>
             </div>
         </main>

@@ -192,11 +192,19 @@ button:active {
 /* ===== Tools ===== */
 
 .tools {
-    text-align: end;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: min-content;
+    gap: 0 5px;
+    justify-content: end;
 }
 
 .add-button {
-    display: inline-block;
+    width: 40px;
+    height: 338px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
 }
 
 /* ===== Tasks ===== */
@@ -280,7 +288,18 @@ input[type=checkbox]:checked::after {
     color: rgb(37, 70, 0);
 }
 
-/* ===== Checkboxes ===== */
+
+/* ===== Icons ===== */
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+/* ===== Animations ===== */
 
 @keyframes tick {
     0% {
