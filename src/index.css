@@ -166,8 +166,8 @@ button:active {
     background: linear-gradient(to right, #c5c5c5, #dfdfdf);
 }
 
-#all-task-btn {
-    margin: 3.5vh 0 0 0;
+#main-project {
+    margin: 0;
     width: 100%;
 }
 
