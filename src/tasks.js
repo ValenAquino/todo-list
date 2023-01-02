@@ -3,7 +3,7 @@ const task_container = document.querySelector("#tasks");
 const project_container = document.querySelector("#projects-btns");
 const project_title = document.querySelector("#tasks-tittle");
 
-const PROJECT = [];
+const PROJECTS = [];
 var PROJECT_COUNTER = 0;
 var TASK_COUNTER = 0;
 
@@ -66,22 +66,27 @@ class ProjectTaskDOM {
         });
     }
 
-    loadTask(newTask) {
+    createTaskContainer(newTask) {
         let task_element = document.createElement("DIV");
-        let btn_remove = this.createRemoveButton(newTask.id);
         
         task_element.innerHTML = `
-        <label class="chk-lbl" for="chk-${newTask.id}">
-        <input 
-        type="checkbox"
-        name="chk-${newTask.id}" 
-        id="chk-${newTask.id}"
-        />
-        </label>
-        
-        <span>
-        ${newTask.description} ${newTask.id}
-        </span>`;
+            <label class="chk-lbl" for="chk-${newTask.id}">
+            <input 
+                type="checkbox"
+                name="chk-${newTask.id}" 
+                id="chk-${newTask.id}"
+            />
+            </label>
+            <span>
+                ${newTask.description} ${newTask.id}
+            </span>`;
+
+        return task_element;
+    }
+
+    createTask(newTask) {
+        let task_element = this.createTaskContainer(newTask);
+        let btn_remove = this.createRemoveButton(newTask.id);
         
         task_element.classList.add("task");
         task_element.setAttribute("id", `task-${newTask.id}`);
@@ -91,8 +96,8 @@ class ProjectTaskDOM {
         task_container.appendChild(task_element);
     }
 
-    loadTasks(projectID) {
-
+    loadTasks() {
+        this.tasks_Elements.forEach(task => task_container.appendChild(task));
     }
 }
 
@@ -101,7 +106,25 @@ class ProjectHandler {
     static addProject(project_name) {
         let newProject = new ProjectTaskDOM(project_name, PROJECT_COUNTER);
         PROJECT_COUNTER++;
-        PROJECT.push(newProject);
+        PROJECTS.push(newProject);
+        
+        this.addProjectBtn(newProject);
+    }
+
+    static addBtnEvent(project_btn, newProject) {
+        project_btn.addEventListener("click", ()=> {
+            project_title.innerText = newProject.project_name;
+            newProject.loadTasks();
+        });
+    }
+
+    static addProjectBtn(newProject) {
+        let project_btn = document.createElement("button");
+        project_btn.innerText = newProject.project_name;
+        project_btn.classList.add("project-btn");
+
+        this.addBtnEvent(project_btn, newProject); 
+        project_container.appendChild(project_btn);
     }
 }
 
@@ -109,17 +132,17 @@ class TaskHandler {
 
     static addTask(description, projectID) {
         let newTask = new Task(description, projectID, TASK_COUNTER);
-        let project = PROJECT.find(aProject => aProject.id == projectID);
+        let project = PROJECTS.find(aProject => aProject.id == projectID);
         
+        console.log(PROJECTS, project, newTask);
         TASK_COUNTER++;
-        project.loadTask(newTask);
+        project.createTask(newTask);
         console.log(newTask);
     }
 
 }
 
-ProjectHandler.addProject("Todas las Tareas");
-
 export {
-    TaskHandler
+    TaskHandler,
+    ProjectHandler
 }
