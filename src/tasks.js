@@ -1,7 +1,6 @@
-const task_container = document.querySelector("#tasks");
+import { Buttons } from "./buttons";
 
-const project_container = document.querySelector("#projects-btns");
-const project_title = document.querySelector("#tasks-tittle");
+const task_container = document.querySelector("#task-container");
 
 const PROJECTS = [];
 var PROJECT_COUNTER = 0;
@@ -31,68 +30,6 @@ class Task {
     get getDescription() {
         return this.description;
     }
-}
-
-/*
-<div class="project-add-container tittle-and-tools-container">
-    <h2 id="tasks-tittle">Todas las Tareas</h2>
-   
-    <div class="tools">
-
-        <button id="add-task-btn" class="right-button">
-            <span class="material-symbols-outlined">
-                add
-            </span>
-        </button>
-
-        <button id="remove-project-btn" class="right-button">
-            <span class="material-symbols-outlined">
-                delete
-            </span>
-        </button>
-
-        </div>
-</div>
-*/
-
-
-class Buttons {
-
-    static createRemoveButton(id, project) {
-        let btn_remove = document.createElement("button");
-
-        btn_remove.innerHTML = `<span class="material-symbols-outlined"> delete </span>`;
-        btn_remove.setAttribute("id", `remove-task-btn-${id}`);
-        btn_remove.setAttribute("class", `right-button remove-btn`);
-        Buttons.addRemoveEvent(btn_remove, id, project);
-
-        return btn_remove;
-    }
-
-    static addRemoveEvent(btn_rm, id, project) {
-        btn_rm.addEventListener("click", () => {
-            let indice = project.tasks_Elements.findIndex(task => task.id == id);
-            document.querySelector(`#task-${id}`).remove();
-            project.tasks_Elements.splice(indice, 1);
-        });
-    }
-
-    static addProjectBtnEvent(project_btn, newProject) {
-        project_btn.addEventListener("click", ()=> {
-            project_title.innerText = newProject.project_name;
-            newProject.loadTasks();
-        });
-    }
-
-    static addProjectBtn(newProject) {
-        let project_btn = document.createElement("button");
-        project_btn.innerText = newProject.project_name;
-        project_btn.classList.add("project-btn");
-
-        Buttons.addProjectBtnEvent(project_btn, newProject); 
-        project_container.appendChild(project_btn);
-    }
-
 }
 
 class ProjectTaskDOM {
@@ -134,23 +71,38 @@ class ProjectTaskDOM {
 
     loadTask(newTask) {
         let task_element = this.createTask(newTask);
-
         this.tasks_Elements.push(task_element);
         task_container.appendChild(task_element);
     }
 
     loadTasks() {
+        task_container.innerHTML = "";
         this.tasks_Elements.forEach(task => task_container.appendChild(task));
+    }
+
+    deleteTask(id) {
+        let indice = this.tasks_Elements.findIndex (
+                        task => task.getAttribute("id") == `task-${id}`
+                    );
+        
+        this.tasks_Elements.splice(indice, 1);
+        document.querySelector(`#task-${id}`).remove();
     }
 }
 
 class ProjectHandler {
 
     static addProject(project_name) {
+        let newProject = ProjectHandler.createProject(project_name);
+        Buttons.createProjectBtn(newProject);
+    }
+
+    static createProject(project_name) {
         let newProject = new ProjectTaskDOM(project_name, PROJECT_COUNTER);
         PROJECT_COUNTER++;
         PROJECTS.push(newProject);
-        Buttons.addProjectBtn(newProject);
+
+        return newProject;
     }
 
 }
