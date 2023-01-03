@@ -52,7 +52,7 @@ class ProjectTaskDOM {
                 />
             </label>
             <span>
-                ${newTask.description} ${newTask.id}
+                ${newTask.description}
             </span>`;
 
         return task_element;

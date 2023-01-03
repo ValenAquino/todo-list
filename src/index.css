@@ -20,7 +20,8 @@
 }
 
 button,
-input {
+input,
+textarea {
   border: none;
   color: inherit;
   font-family: inherit;
@@ -288,6 +289,73 @@ input[type=checkbox]:checked::after {
     font-size: 1.1em;
     font-weight: 800;
     color: rgb(37, 70, 0);
+}
+
+/* ===== Modales ===== */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-items: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .7s;
+    --transform: translateY(-100vh);
+    --transition: transform .5s;
+}
+
+.modal--show {
+    opacity: 1;
+    pointer-events: unset;
+    transition: opacity .3s;
+    --transform: translateY(0vh);
+    --transition: transform .5s;
+}
+
+.overflow-hidden {
+    overflow:hidden;
+}
+
+.modal-header {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 86% 10%;
+    padding: 3px 12px;
+    margin: 25px 0;
+    border-bottom: 1px solid var(--light-gray);
+    gap: 0 10px;
+}
+
+.input_name {
+    display: block;
+    padding: 5px;
+    margin: 14px 0 25px 0px;
+}
+
+.modal-container {
+    background: var(--gray-gradient);
+    display: grid;
+    justify-items: center;
+    padding: 1vh 2vw 3vw 2vw;
+    transform: var(--transform);
+    transition: var(--transition);
+}
+
+#task_name {
+    text-align: start;
+    font-family:  'Noto Sans', sans-serif;  
+}
+
+textarea {
+    cursor: text;
 }
 
 /* ===== Icons ===== */

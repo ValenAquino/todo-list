@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>To-Do</title>
 </head>
-<body>
+<body id="body">
     <header class="header-footer">
         <h1>TO-DO</h1>
         <h2>✔✔</h2>
@@ -45,9 +45,51 @@
                         </button>
                     </div>
                 </div>
-            <div id="task-container"></div>
+            
+                <div id="task-container"></div>
+            
             </div>
         </main>
+    </div>
+
+    <div id="add-project-modal" class="modal">
+        <form class="modal-container" id="project-form">
+            <div class="modal-header">
+                <h2>Agregar Proyecto</h2>
+                <button class="modal-close-btn right-button" id="close_modal_project">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </button>
+            </div>
+            <label for="project_name">
+                <span>Nombre del Proyecto</span>
+                <input class="input_name" type="text" id="project_name" name="project_name" required>
+            </label>
+            <button type="submit" id="submit-project"> Crear Proyecto </button>
+        </form>
+    </div>
+
+    <div id="add-task-modal" class="modal">
+        <form class="modal-container" id="task-form">
+            <div class="modal-header">
+                <h2>Agregar Proyecto</h2>
+                <button class="modal-close-btn right-button" id="close_modal_task">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </button>
+            </div>
+            <label for="task_name">
+                <span>Descripción de la tarea</span>
+                <textarea 
+                    class="input_name" id="task_name" 
+                    name="task_name" required    
+                    cols="30" rows="5"
+                ></textarea>
+            </label>
+            <button type="submit" id="submit-task"> Crear Tarea </button>
+        </form>
     </div>
 
     <footer class="header-footer">
