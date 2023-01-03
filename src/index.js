@@ -3,38 +3,35 @@ import style from "./index.css"
 import { ProjectHandler, TaskHandler } from "./tasks";
 import { Buttons } from "./buttons";
 
+/* ===== General Elements ===== */
 const body = document.querySelector("#body");
 
-// Task buttons
+/* ===== Tasks btns ===== */
 const add_task_btn = document.querySelector("#add-task-btn-0");
 
-// Task Modal
+/* ===== Tasks modal ===== */
 const add_task_modal = document.querySelector("#add-task-modal");
 const close_task_modal = document.querySelector("#close_modal_task");
 const submit_task_modal = document.querySelector("#submit-task");
 const input_task_modal = document.querySelector("#task_name");
 const task_form = document.querySelector("#task-form");
 
-// Project buttons
+/* ===== Project btns ===== */
 const remove_project_btn = document.querySelector("#remove-project-btn-0");
 const add_project_btn = document.querySelector("#add-project-btn");
 
-// Project Modal
+/* ===== Project modal ===== */
 const add_project_modal = document.querySelector("#add-project-modal");
 const close_project_modal = document.querySelector("#close_modal_project");
 const submit_project_modal = document.querySelector("#submit-project");
 const input_project_modal = document.querySelector("#project_name");
 const project_form = document.querySelector("#project-form");
 
-// Tasks
+
+/* ===== Tasks ===== */
 
 add_task_btn.addEventListener("click", () => {
     showModal(add_task_modal, task_form);
-});
-
-close_task_modal.addEventListener("click", (e) => {
-    e.preventDefault();
-    closeModal(add_task_modal);
 });
 
 submit_task_modal.addEventListener("click", (e) => {
@@ -47,20 +44,21 @@ submit_task_modal.addEventListener("click", (e) => {
         alert("No se puede enviar el campo vacio");
     }
     else {
-        TaskHandler.addTask(task_description, getProjectID("add-task-btn-",id));
+        TaskHandler.addTask(task_description, getProjectID("add-task-btn-", id));
         closeModal(add_task_modal);
     }
 });
 
-// Project
+close_task_modal.addEventListener("click", (e) => {
+    e.preventDefault();
+    closeModal(add_task_modal);
+});
+
+
+/* ===== Projects ===== */
 
 add_project_btn.addEventListener("click", () => {
     showModal(add_project_modal, project_form);
-});
-
-close_project_modal.addEventListener("click", (e) => {
-    e.preventDefault();
-    closeModal(add_project_modal);
 });
 
 submit_project_modal.addEventListener("click", (e) => {
@@ -78,18 +76,23 @@ submit_project_modal.addEventListener("click", (e) => {
     
 });
 
+close_project_modal.addEventListener("click", (e) => {
+    e.preventDefault();
+    closeModal(add_project_modal);
+});
+
 remove_project_btn.addEventListener("click", () => {
     let id = remove_project_btn.getAttribute("id");
     let projectID = getProjectID("remove-project-btn-", id);
-    let project = ProjectHandler.getProject(projectID);
+    let project_name = ProjectHandler.getProjectNameByID(projectID);
 
-    if(projectID != 0 && confirm(`Desea borrar el proyecto ${project.project_name}`)) {
+    if(projectID != 0 && confirm(`Desea borrar el proyecto ${project_name}`)) {
         ProjectHandler.deleteProject(projectID);
     }
 });
 
-// Utilities
 
+/* ===== Utilities ===== */
 
 function getProjectID(str, id) {
     let numString = id.replace(str, "");

@@ -1,9 +1,8 @@
 import { Buttons } from "./buttons";
-
-const task_container = document.querySelector("#task-container");
-const project_title = document.querySelector("#tasks-tittle");
+import { ProjectDOM } from "./components";
 
 var PROJECTS = [];
+var PROJECTS_DOM = [];
 var PROJECT_COUNTER = 0;
 var TASK_COUNTER = 0;
 
@@ -16,189 +15,92 @@ class Task {
         this.id = id;
     }
 
-    set setDone(value) {
-        this.isDone = value;
-    }
-
-    set setDescription(value) {
-        this.description = value;
-    }
-
-    get getDone() {
-        return this.isDone;
-    }
-
-    get getDescription() {
-        return this.description;
-    }
 }
 
 class Project {
-    constructor(project_name, id) {
-        this.project_name = project_name;
-        this.id = id;
-    }
-}
-
-class ProjectTaskDOM {
-    tasks_Elements = [];
-    tasks = []
+    tasks = [];
 
     constructor(project_name, id) {
         this.project_name = project_name;
         this.id = id;
-    }
-
-    createDescription(description) {
-        let span = document.createElement("span");
-        span.innerText = description;
-        return span;
-    }
-
-    createCheckbox(id) {
-        let checkbox = document.createElement("label");
-        checkbox.innerHTML = `<input type="checkbox" name="chk-${id}" id="chk-${id}"/>`;
-        checkbox.setAttribute("class", "chk-lbl");
-        checkbox.setAttribute("for", `chk-${id}`);
-    
-        return checkbox;
-    }
-
-    createTaskContainer(newTask) {
-        let task_element = document.createElement("DIV");
-        let checkbox = this.createCheckbox(newTask.id);
-        let description = this.createDescription(newTask.description);
-        let btn_remove = Buttons.createRemoveButton(newTask.id, this);
-
-        checkbox.addEventListener("click", (e) => {
-            if(e.target.checked) {
-                task_element.classList.add("task_done");
-                description.classList.add("text_task_done");
-            }
-            else {
-                task_element.classList.remove("task_done");
-                description.classList.remove("text_task_done");
-            }
-        });
-
-        task_element.appendChild(checkbox);
-        task_element.appendChild(description);
-        task_element.appendChild(btn_remove);
-    
-        task_element.classList.add("task");
-        task_element.setAttribute("id", `task-${newTask.id}`);
-        this.tasks_Elements.push(task_element);
-        
-        return task_element;
-    }
-    
-    createTask(newTask) {
-        let task_element = this.createTaskContainer(newTask);
-        this.tasks.push(newTask);
-
-        return task_element;
-    }
-
-    loadTask(newTask) {
-        let task_element = this.createTask(newTask);
-        task_container.appendChild(task_element);
-    }
-
-    loadTasks() {
-        task_container.innerHTML = "";
-        project_title.innerText = this.project_name;
-        this.tasks_Elements.forEach(task => task_container.appendChild(task));
-    }
-
-    deleteTask(id) {
-        let indice = this.tasks_Elements.findIndex (
-                        task => task.getAttribute("id") == `task-${id}`
-                    );
-        
-        this.tasks_Elements.splice(indice, 1);
-        document.querySelector(`#task-${id}`).remove();
     }
 
 }
 
 class ProjectHandler {
 
-    static addProject(project_name) {
-        let newProject = ProjectHandler.createProject(project_name);
-        Buttons.createProjectBtn(newProject);
-        atualizar_storage();
+    static addFirstProject() {
+        let main_project_btn = document.querySelector("#main-project");
+        let main_project = new ProjectDOM("Todas las Tareas", PROJECT_COUNTER);
+    
+        Buttons.addProjectBtnEvent(main_project_btn, main_project);
+        ProjectHandler.createProject("Todas las Tareas");
+        PROJECTS_DOM.push(main_project);
+        PROJECT_COUNTER++; 
+    }
+    
+    static addProject(project_name) {        
+        ProjectHandler.createProject(project_name);
+        ProjectHandler.createProjectElement(project_name);
+        PROJECT_COUNTER++;
     }
 
     static createProject(project_name) {
-        let newProject = new ProjectTaskDOM(project_name, PROJECT_COUNTER);
-        PROJECT_COUNTER++;
+        let newProject = new Project(project_name, PROJECT_COUNTER);
         PROJECTS.push(newProject);
-    
-        return newProject;
+        // Actualizar local storage ();
+    }
+
+    static createProjectElement(project_name) {
+        let projectElemet = new ProjectDOM(project_name, PROJECT_COUNTER);
+        PROJECTS_DOM.push(projectElemet);
+        Buttons.createProjectBtn(projectElemet); // Crea y agrega el btn al DOM
     }
 
     static deleteProject(projectID) {
-        let indice = PROJECTS.findIndex (
-            project => project.id == projectID
-        );
+        let project_index = PROJECTS.findIndex(project => project.id == projectID);
+        let project_element_index = PROJECTS_DOM.findIndex(project => project.id == projectID);
 
-        document.querySelector(`#project-btn-${PROJECTS[indice].id}`).remove();
-        PROJECTS.splice(indice, 1);
-        PROJECTS[0].loadTasks();
-        atualizar_storage();
-
+        document.querySelector(`#project-btn-${projectID}`).remove();
+        PROJECTS.splice(project_index, 1);
+        PROJECTS_DOM.splice(project_element_index, 1);
+        // Actualizar local storage ();
     }
 
-    static getProject(projectID) {
-        let indice = PROJECTS.findIndex (
-            project => project.id == projectID
-        );
-
-        return PROJECTS[indice];
+    static getProjectNameByID(projectID) {
+        return PROJECTS.find(project => project.id == projectID).project_name;
     }
 }
 
 class TaskHandler {
 
     static addTask(description, projectID) {
-        let newTask = new Task(description, projectID, TASK_COUNTER);
-        let project = PROJECTS.find(aProject => aProject.id == projectID);
-        
+        TaskHandler.createTask(description, projectID);
+        TaskHandler.createTaskElement(description, projectID);
         TASK_COUNTER++;
-        project.loadTask(newTask);
-        atualizar_storage();
     }
+    
+    static createTask(description, projectID) {
+        let newTask = new Task(description, projectID, TASK_COUNTER);
+        let project = PROJECTS.find (project => project.id == projectID);
+    
+        project.tasks.push(newTask);
+        // Actualizar local storage ();
+    }
+    
+    static createTaskElement(description, projectID) {
+        let project_element = PROJECTS_DOM.find (project => project.id == projectID);
+        project_element.loadTask(description, TASK_COUNTER);
+    }
+
 }
 
-function atualizar_storage() {
-    localStorage.setItem("PROJECTS", JSON.stringify(PROJECTS));
+/* ===== Utilities ===== */
 
-    console.log(JSON.parse(localStorage.getItem("PROJECTS")));
-}
 
-function create_main_project() {
-    let projects_serialized = localStorage.getItem("PROJECTS");
+/* ===== Initialization ===== */
 
-    if(!projects_serialized) {
-        PROJECTS = [];
-        const main_project_btn = document.querySelector("#main-project");
-        let main_project = ProjectHandler.createProject("Todas las Tareas");
-        Buttons.addProjectBtnEvent(main_project_btn, main_project);
-    }
-    else {  
-        let projects = JSON.parse(projects_serialized);
-        
-        console.log(projects)
-
-        projects.forEach( project => {
-            ProjectHandler.addProject(project.project_name);
-        });
-    }
-}
-
-// Initialization
-
-create_main_project();
+ProjectHandler.addFirstProject();
 
 export {
     TaskHandler,
