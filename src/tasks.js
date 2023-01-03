@@ -40,15 +40,21 @@ class ProjectHandler {
     }
     
     static addProject(project_name) {        
-        ProjectHandler.createProject(project_name);
-        ProjectHandler.createProjectElement(project_name);
+        if(PROJECTS.length == 0) {
+            ProjectHandler.addFirstProject();
+        }   
+        else {
+            ProjectHandler.createProject(project_name);
+            ProjectHandler.createProjectElement(project_name);
+        }
+
         PROJECT_COUNTER++;
     }
 
     static createProject(project_name) {
         let newProject = new Project(project_name, PROJECT_COUNTER);
         PROJECTS.push(newProject);
-        // Actualizar local storage ();
+        update_storage();
     }
 
     static createProjectElement(project_name) {
@@ -64,7 +70,7 @@ class ProjectHandler {
         document.querySelector(`#project-btn-${projectID}`).remove();
         PROJECTS.splice(project_index, 1);
         PROJECTS_DOM.splice(project_element_index, 1);
-        // Actualizar local storage ();
+        update_storage();
     }
 
     static getProjectNameByID(projectID) {
@@ -85,7 +91,7 @@ class TaskHandler {
         let project = PROJECTS.find (project => project.id == projectID);
     
         project.tasks.push(newTask);
-        // Actualizar local storage ();
+        update_storage();
     }
     
     static createTaskElement(description, projectID) {
@@ -97,10 +103,39 @@ class TaskHandler {
 
 /* ===== Utilities ===== */
 
+function update_storage() {
+    localStorage.setItem("PROJECTS", JSON.stringify(PROJECTS));
+}
+
+function load_storage() {
+    let temp_storage = localStorage.getItem("PROJECTS");
+    
+    if(temp_storage) {
+        let temp_projects = JSON.parse(temp_storage);
+        console.log(temp_projects);
+        load_projects(temp_projects);
+    }
+    else {
+        ProjectHandler.addFirstProject();
+    }
+}
+
+function load_tasks(project) {
+    project.tasks.forEach(task => {
+        TaskHandler.addTask(JSON.parse(task), project.id);
+    });
+}
+
+function load_projects(temp_projects) {
+    temp_projects.forEach(project => {
+        ProjectHandler.addProject();
+        load_tasks(project);
+    });
+}
 
 /* ===== Initialization ===== */
 
-ProjectHandler.addFirstProject();
+load_storage();
 
 export {
     TaskHandler,

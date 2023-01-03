@@ -4,7 +4,7 @@ const TASK_CONTAINER = document.querySelector("#task-container");
 const PROJECT_TITLE = document.querySelector("#tasks-tittle");
 
 class TaskDOM {
-    id
+    id;
     task_element;
     checkbox;
     description;
