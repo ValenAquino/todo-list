@@ -3,7 +3,7 @@ import { Buttons } from "./buttons";
 const task_container = document.querySelector("#task-container");
 const project_title = document.querySelector("#tasks-tittle");
 
-const PROJECTS = [];
+var PROJECTS = [];
 var PROJECT_COUNTER = 0;
 var TASK_COUNTER = 0;
 
@@ -33,8 +33,16 @@ class Task {
     }
 }
 
+class Project {
+    constructor(project_name, id) {
+        this.project_name = project_name;
+        this.id = id;
+    }
+}
+
 class ProjectTaskDOM {
     tasks_Elements = [];
+    tasks = []
 
     constructor(project_name, id) {
         this.project_name = project_name;
@@ -60,6 +68,7 @@ class ProjectTaskDOM {
         let task_element = document.createElement("DIV");
         let checkbox = this.createCheckbox(newTask.id);
         let description = this.createDescription(newTask.description);
+        let btn_remove = Buttons.createRemoveButton(newTask.id, this);
 
         checkbox.addEventListener("click", (e) => {
             if(e.target.checked) {
@@ -74,24 +83,24 @@ class ProjectTaskDOM {
 
         task_element.appendChild(checkbox);
         task_element.appendChild(description);
-
-        return task_element;
-    }
-
-    createTask(newTask) {
-        let task_element = this.createTaskContainer(newTask);
-        let btn_remove = Buttons.createRemoveButton(newTask.id, this);
-        
+        task_element.appendChild(btn_remove);
+    
         task_element.classList.add("task");
         task_element.setAttribute("id", `task-${newTask.id}`);
-        task_element.appendChild(btn_remove);
+        this.tasks_Elements.push(task_element);
+        
+        return task_element;
+    }
+    
+    createTask(newTask) {
+        let task_element = this.createTaskContainer(newTask);
+        this.tasks.push(newTask);
 
         return task_element;
     }
 
     loadTask(newTask) {
         let task_element = this.createTask(newTask);
-        this.tasks_Elements.push(task_element);
         task_container.appendChild(task_element);
     }
 
@@ -117,13 +126,14 @@ class ProjectHandler {
     static addProject(project_name) {
         let newProject = ProjectHandler.createProject(project_name);
         Buttons.createProjectBtn(newProject);
+        atualizar_storage();
     }
 
     static createProject(project_name) {
         let newProject = new ProjectTaskDOM(project_name, PROJECT_COUNTER);
         PROJECT_COUNTER++;
         PROJECTS.push(newProject);
-
+    
         return newProject;
     }
 
@@ -135,6 +145,8 @@ class ProjectHandler {
         document.querySelector(`#project-btn-${PROJECTS[indice].id}`).remove();
         PROJECTS.splice(indice, 1);
         PROJECTS[0].loadTasks();
+        atualizar_storage();
+
     }
 
     static getProject(projectID) {
@@ -154,8 +166,39 @@ class TaskHandler {
         
         TASK_COUNTER++;
         project.loadTask(newTask);
+        atualizar_storage();
     }
 }
+
+function atualizar_storage() {
+    localStorage.setItem("PROJECTS", JSON.stringify(PROJECTS));
+
+    console.log(JSON.parse(localStorage.getItem("PROJECTS")));
+}
+
+function create_main_project() {
+    let projects_serialized = localStorage.getItem("PROJECTS");
+
+    if(!projects_serialized) {
+        PROJECTS = [];
+        const main_project_btn = document.querySelector("#main-project");
+        let main_project = ProjectHandler.createProject("Todas las Tareas");
+        Buttons.addProjectBtnEvent(main_project_btn, main_project);
+    }
+    else {  
+        let projects = JSON.parse(projects_serialized);
+        
+        console.log(projects)
+
+        projects.forEach( project => {
+            ProjectHandler.addProject(project.project_name);
+        });
+    }
+}
+
+// Initialization
+
+create_main_project();
 
 export {
     TaskHandler,

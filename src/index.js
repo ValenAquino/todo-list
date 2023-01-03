@@ -16,7 +16,6 @@ const input_task_modal = document.querySelector("#task_name");
 const task_form = document.querySelector("#task-form");
 
 // Project buttons
-const main_project_btn = document.querySelector("#main-project");
 const remove_project_btn = document.querySelector("#remove-project-btn-0");
 const add_project_btn = document.querySelector("#add-project-btn");
 
@@ -91,10 +90,6 @@ remove_project_btn.addEventListener("click", () => {
 
 // Utilities
 
-function create_main_project() {
-    let main_project = ProjectHandler.createProject("Todas las Tareas");
-    Buttons.addProjectBtnEvent(main_project_btn, main_project);
-}
 
 function getProjectID(str, id) {
     let numString = id.replace(str, "");
@@ -111,7 +106,3 @@ function closeModal(modal) {
     modal.classList.remove("modal--show");
     body.classList.remove("overflow-hidden");
 }
-
-// Initialization
-
-create_main_project();
