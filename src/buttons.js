@@ -1,7 +1,7 @@
 const project_container = document.querySelector("#projects-btns");
-const project_title = document.querySelector("#tasks-tittle");
 
-var active_project = "add-task-btn-0";
+var active_project_add = "add-task-btn-0";
+var active_project_remove = "remove-project-btn-0";
 
 class Buttons {
 
@@ -24,23 +24,35 @@ class Buttons {
 
     static createProjectBtn(newProject) {
         let project_btn = document.createElement("button");
+        
         project_btn.innerText = newProject.project_name;
         project_btn.classList.add("project-btn");
+        project_btn.setAttribute("id", `project-btn-${newProject.id}`);
 
         Buttons.addProjectBtnEvent(project_btn, newProject); 
         project_container.appendChild(project_btn);
+        projectClickEvent(newProject);
     }
 
     static addProjectBtnEvent(project_btn, newProject) {
-        var add_task_btn = document.querySelector(`#${active_project}`);
+        var add_task_btn = document.querySelector(`#${active_project_add}`);
+        var remove_project_btn = document.querySelector(`#${active_project_remove}`);
 
         project_btn.addEventListener("click", ()=> {
-            project_title.innerText = newProject.project_name;
-            newProject.loadTasks();
-            active_project = `add-task-btn-${newProject.id}`;
-            add_task_btn.setAttribute("id", `${active_project}`);
+            projectClickEvent(newProject, add_task_btn, remove_project_btn)
         });
     }
+
+}
+
+function projectClickEvent(project, add_task_btn, remove_project_btn) {
+    project.loadTasks();
+            
+    active_project_add = `add-task-btn-${project.id}`;
+    add_task_btn.setAttribute("id", `${active_project_add}`);
+
+    active_project_remove = `remove-project-btn-${project.id}`;
+    remove_project_btn.setAttribute("id", `${active_project_remove}`);
 }
 
 export {

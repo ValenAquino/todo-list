@@ -17,7 +17,7 @@ const task_form = document.querySelector("#task-form");
 
 // Project buttons
 const main_project_btn = document.querySelector("#main-project");
-const remove_project_btn = document.querySelector("#remove-project-btn");
+const remove_project_btn = document.querySelector("#remove-project-btn-0");
 const add_project_btn = document.querySelector("#add-project-btn");
 
 // Project Modal
@@ -36,17 +36,22 @@ add_task_btn.addEventListener("click", () => {
 close_task_modal.addEventListener("click", (e) => {
     e.preventDefault();
     closeModal(add_task_modal);
-})
+});
 
 submit_task_modal.addEventListener("click", (e) => {
     e.preventDefault();
 
     let id = add_task_btn.getAttribute("id");
-    let task_description = input_task_modal.value;    
-    
-    TaskHandler.addTask(task_description, getProjectID(id));
-    closeModal(add_task_modal);
-})
+    let task_description = input_task_modal.value;
+
+    if(task_description < 1) {
+        alert("No se puede enviar el campo vacio");
+    }
+    else {
+        TaskHandler.addTask(task_description, getProjectID("add-task-btn-",id));
+        closeModal(add_task_modal);
+    }
+});
 
 // Project
 
@@ -57,18 +62,31 @@ add_project_btn.addEventListener("click", () => {
 close_project_modal.addEventListener("click", (e) => {
     e.preventDefault();
     closeModal(add_project_modal);
-})
+});
 
 submit_project_modal.addEventListener("click", (e) => {
     e.preventDefault();
 
-    let project_name = input_project_modal.value;    
-    ProjectHandler.addProject(project_name);
-    closeModal(add_project_modal);
-})
+    let project_name = input_project_modal.value;
+
+    if(project_name < 1) {
+        alert("No se puede enviar el campo vacio");
+    }
+    else {
+        closeModal(add_project_modal);
+        ProjectHandler.addProject(project_name);
+    }
+    
+});
 
 remove_project_btn.addEventListener("click", () => {
-    alert("remove project")
+    let id = remove_project_btn.getAttribute("id");
+    let projectID = getProjectID("remove-project-btn-", id);
+    let project = ProjectHandler.getProject(projectID);
+
+    if(projectID != 0 && confirm(`Desea borrar el proyecto ${project.project_name}`)) {
+        ProjectHandler.deleteProject(projectID);
+    }
 });
 
 // Utilities
@@ -78,8 +96,8 @@ function create_main_project() {
     Buttons.addProjectBtnEvent(main_project_btn, main_project);
 }
 
-function getProjectID(id) {
-    let numString = id.replace("add-task-btn-", "");
+function getProjectID(str, id) {
+    let numString = id.replace(str, "");
     return parseInt(numString, 10);
 }
 

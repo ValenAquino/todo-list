@@ -1,6 +1,7 @@
 import { Buttons } from "./buttons";
 
 const task_container = document.querySelector("#task-container");
+const project_title = document.querySelector("#tasks-tittle");
 
 const PROJECTS = [];
 var PROJECT_COUNTER = 0;
@@ -40,20 +41,39 @@ class ProjectTaskDOM {
         this.id = id;
     }
 
+    createDescription(description) {
+        let span = document.createElement("span");
+        span.innerText = description;
+        return span;
+    }
+
+    createCheckbox(id) {
+        let checkbox = document.createElement("label");
+        checkbox.innerHTML = `<input type="checkbox" name="chk-${id}" id="chk-${id}"/>`;
+        checkbox.setAttribute("class", "chk-lbl");
+        checkbox.setAttribute("for", `chk-${id}`);
+    
+        return checkbox;
+    }
+
     createTaskContainer(newTask) {
         let task_element = document.createElement("DIV");
-        
-        task_element.innerHTML = `
-            <label class="chk-lbl" for="chk-${newTask.id}">
-                <input 
-                    type="checkbox" 
-                    name="chk-${newTask.id}" 
-                    id="chk-${newTask.id}"
-                />
-            </label>
-            <span>
-                ${newTask.description}
-            </span>`;
+        let checkbox = this.createCheckbox(newTask.id);
+        let description = this.createDescription(newTask.description);
+
+        checkbox.addEventListener("click", (e) => {
+            if(e.target.checked) {
+                task_element.classList.add("task_done");
+                description.classList.add("text_task_done");
+            }
+            else {
+                task_element.classList.remove("task_done");
+                description.classList.remove("text_task_done");
+            }
+        });
+
+        task_element.appendChild(checkbox);
+        task_element.appendChild(description);
 
         return task_element;
     }
@@ -77,6 +97,7 @@ class ProjectTaskDOM {
 
     loadTasks() {
         task_container.innerHTML = "";
+        project_title.innerText = this.project_name;
         this.tasks_Elements.forEach(task => task_container.appendChild(task));
     }
 
@@ -88,6 +109,7 @@ class ProjectTaskDOM {
         this.tasks_Elements.splice(indice, 1);
         document.querySelector(`#task-${id}`).remove();
     }
+
 }
 
 class ProjectHandler {
@@ -105,6 +127,23 @@ class ProjectHandler {
         return newProject;
     }
 
+    static deleteProject(projectID) {
+        let indice = PROJECTS.findIndex (
+            project => project.id == projectID
+        );
+
+        document.querySelector(`#project-btn-${PROJECTS[indice].id}`).remove();
+        PROJECTS.splice(indice, 1);
+        PROJECTS[0].loadTasks();
+    }
+
+    static getProject(projectID) {
+        let indice = PROJECTS.findIndex (
+            project => project.id == projectID
+        );
+
+        return PROJECTS[indice];
+    }
 }
 
 class TaskHandler {

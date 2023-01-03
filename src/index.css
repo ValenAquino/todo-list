@@ -233,6 +233,14 @@ button:active {
     padding: 5vh 0;
 }
 
+#task-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+    height: fit-content;
+    gap: 7px 0;
+}
+
 .task {
     min-height: 8vh;
     width: 100%;
@@ -277,7 +285,7 @@ input[type=checkbox]:checked:hover {
 }
 
 input[type=checkbox]:checked {
-    background-color:#bbee8b;
+    background-color:#d5ffad;
     animation: tick .3s ease-out;
 }
 
@@ -289,6 +297,18 @@ input[type=checkbox]:checked::after {
     font-size: 1.1em;
     font-weight: 800;
     color: rgb(37, 70, 0);
+}
+
+.task_done {
+    opacity: .6;
+}
+
+.text_task_done {
+    text-decoration: line-through;
+}
+
+.task_done:hover {
+    background-color: #d6d6d683;
 }
 
 /* ===== Modales ===== */
