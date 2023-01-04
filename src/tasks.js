@@ -122,15 +122,17 @@ function load_storage() {
 
 function load_tasks(project) {
     project.tasks.forEach(task => {
-        TaskHandler.addTask(JSON.parse(task), project.id);
+        TaskHandler.addTask(task.description, project.id);
     });
 }
 
 function load_projects(temp_projects) {
     temp_projects.forEach(project => {
-        ProjectHandler.addProject();
+        ProjectHandler.addProject(project.project_name);
         load_tasks(project);
     });
+    
+    PROJECTS_DOM[0].loadTasks();
 }
 
 /* ===== Initialization ===== */
