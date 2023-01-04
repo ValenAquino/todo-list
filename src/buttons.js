@@ -3,6 +3,9 @@ const project_container = document.querySelector("#projects-btns");
 var active_project_add = "add-task-btn-0";
 var active_project_remove = "remove-project-btn-0";
 
+var add_task_btn = document.querySelector(`#${active_project_add}`);
+var remove_project_btn = document.querySelector(`#${active_project_remove}`);
+
 class Buttons {
 
     static createRemoveButton(id, project) {
@@ -31,21 +34,19 @@ class Buttons {
 
         Buttons.addProjectBtnEvent(project_btn, newProject); 
         project_container.appendChild(project_btn);
+        
         projectClickEvent(newProject);
     }
 
     static addProjectBtnEvent(project_btn, newProject) {
-        var add_task_btn = document.querySelector(`#${active_project_add}`);
-        var remove_project_btn = document.querySelector(`#${active_project_remove}`);
-
-        project_btn.addEventListener("click", ()=> {
-            projectClickEvent(newProject, add_task_btn, remove_project_btn)
+        project_btn.addEventListener("click", () => {
+            projectClickEvent(newProject);
         });
     }
 
 }
 
-function projectClickEvent(project, add_task_btn, remove_project_btn) {
+function projectClickEvent(project) {
     project.loadTasks();
             
     active_project_add = `add-task-btn-${project.id}`;
