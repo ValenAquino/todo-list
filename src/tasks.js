@@ -120,13 +120,13 @@ function load_storage() {
     }
 }
 
-function load_tasks(project) {
+export function load_tasks(project) {
     project.tasks.forEach(task => {
         TaskHandler.addTask(task.description, project.id);
     });
 }
 
-function load_projects(temp_projects) {
+    function load_projects(temp_projects) {
     temp_projects.forEach(project => {
         ProjectHandler.addProject(project.project_name);
         load_tasks(project);
@@ -137,9 +137,9 @@ function load_projects(temp_projects) {
 
 /* ===== Initialization ===== */
 
-load_storage();
+window.addEventListener("load", load_storage);
 
 export {
     TaskHandler,
-    ProjectHandler
+    ProjectHandler,
 }

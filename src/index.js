@@ -1,7 +1,6 @@
 import style from "./index.css"
 
 import { ProjectHandler, TaskHandler } from "./tasks";
-import { Buttons } from "./buttons";
 
 /* ===== General Elements ===== */
 const body = document.querySelector("#body");
