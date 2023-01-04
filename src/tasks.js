@@ -99,6 +99,18 @@ class TaskHandler {
         project_element.loadTask(description, TASK_COUNTER);
     }
 
+    static deleteTask(projectID, taskID) {
+        let project_DOM = PROJECTS_DOM.find(project => project.id == projectID);
+        let taskIndex_DOM = project_DOM.tasks_elements.findIndex(task => task.id == taskID);
+        project_DOM.tasks_elements.splice(taskIndex_DOM, 1);
+        
+        let project = PROJECTS.find(project => project.id == projectID);
+        let taskIndex = project.tasks.findIndex(task => task.id == taskID);
+        project.tasks.splice(taskIndex, 1);
+        
+        update_storage();
+    }
+
 }
 
 /* ===== Utilities ===== */
@@ -112,7 +124,6 @@ function load_storage() {
     
     if(temp_storage) {
         let temp_projects = JSON.parse(temp_storage);
-        console.log(temp_projects);
         load_projects(temp_projects);
     }
     else {

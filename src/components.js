@@ -1,4 +1,5 @@
 import { Buttons } from "./buttons";
+import { TaskHandler } from "./tasks";
 
 const TASK_CONTAINER = document.querySelector("#task-container");
 const PROJECT_TITLE = document.querySelector("#tasks-tittle");
@@ -98,11 +99,9 @@ class ProjectDOM {
         }
     }
 
-    deleteTask(id) {
-        let indice = this.tasks_elements.findIndex(task => task.id == id);
-        
-        this.tasks_elements.splice(indice, 1);
-        document.querySelector(`#task-${id}`).remove();
+    deleteTask(taskID) {
+        TaskHandler.deleteTask(this.id, taskID);
+        document.querySelector(`#task-${taskID}`).remove();
     }
 
 }
