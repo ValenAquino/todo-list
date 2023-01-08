@@ -131,7 +131,7 @@ function load_storage() {
     }
 }
 
-export function load_tasks(project) {
+function load_tasks(project) {
     project.tasks.forEach(task => {
         TaskHandler.addTask(task.description, project.id);
     });
